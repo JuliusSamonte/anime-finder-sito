@@ -26,7 +26,6 @@ header p { color: var(--text-muted); }
 .input-group label { font-size: 0.8rem; color: var(--text-muted); font-weight: bold; text-transform: uppercase; }
 
 input, select { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-main); color: #fff; outline: none; box-sizing: border-box; width: 100%;}
-.small-select { padding: 6px; font-size: 0.8rem; width: auto; background: var(--bg-card); border-color: var(--border); }
 
 .tags-header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px; }
 

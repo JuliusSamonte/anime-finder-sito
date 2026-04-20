@@ -1,4 +1,4 @@
-// 👇 CAMBIA QUESTO CON IL TUO VERO LINK DI RENDER (Senza lo slash finale / ) 👇
+// 👇 INCOLLA IL TUO VERO LINK RENDER QUI (Senza lo slash finale / ) 👇
 const BASE_URL = "https://anime-finder-backend.onrender.com";
 
 const btnCerca = document.getElementById('btnCerca');
@@ -76,8 +76,7 @@ async function eseguiRicerca(nuova = true) {
             q: document.getElementById('inputNome').value,
             genre: tags.included,
             exclude: tags.excluded,
-            genres_mode: document.getElementById('selectGenreMode').value, // <--- Nuovo
-            min_score: document.getElementById('inputScore').value,       // <--- Nuovo
+            min_score: document.getElementById('inputScore').value,
             status: document.getElementById('selectStato').value,
             year: document.getElementById('inputAnno').value,
             season: document.getElementById('selectStagione').value,
@@ -95,7 +94,7 @@ async function eseguiRicerca(nuova = true) {
             throw new Error("Devi inserire l'URL di Render alla riga 2 del file script.js!");
         }
 
-        const query = `mediaType=${filtriAttivi.mediaType}&q=${encodeURIComponent(filtriAttivi.q)}&genre=${filtriAttivi.genre}&exclude_genre=${filtriAttivi.exclude}&genres_mode=${filtriAttivi.genres_mode}&min_score=${filtriAttivi.min_score}&status=${filtriAttivi.status}&year=${filtriAttivi.year}&season=${filtriAttivi.season}&manga_type=${filtriAttivi.manga_type}&episodes=${filtriAttivi.episodes}&page=${paginaAttuale}`;
+        const query = `mediaType=${filtriAttivi.mediaType}&q=${encodeURIComponent(filtriAttivi.q)}&genre=${filtriAttivi.genre}&exclude_genre=${filtriAttivi.exclude}&min_score=${filtriAttivi.min_score}&status=${filtriAttivi.status}&year=${filtriAttivi.year}&season=${filtriAttivi.season}&manga_type=${filtriAttivi.manga_type}&episodes=${filtriAttivi.episodes}&page=${paginaAttuale}`;
         
         const response = await fetch(`${BASE_URL}/api/search?${query}`);
         
@@ -159,10 +158,9 @@ async function animeRandom() {
 
         const tags = getTags(); 
         const mediaType = document.querySelector('input[name="mediaType"]:checked').value;
-        const genresMode = document.getElementById('selectGenreMode').value;
         const minScore = document.getElementById('inputScore').value;
 
-        const response = await fetch(`${BASE_URL}/api/random?mediaType=${mediaType}&genre=${tags.included}&exclude_genre=${tags.excluded}&genres_mode=${genresMode}&min_score=${minScore}`);
+        const response = await fetch(`${BASE_URL}/api/random?mediaType=${mediaType}&genre=${tags.included}&exclude_genre=${tags.excluded}&min_score=${minScore}`);
         
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
