@@ -76,6 +76,8 @@ async function eseguiRicerca(nuova = true) {
             q: document.getElementById('inputNome').value,
             genre: tags.included,
             exclude: tags.excluded,
+            genres_mode: document.getElementById('selectGenreMode').value, // <--- Nuovo
+            min_score: document.getElementById('inputScore').value,       // <--- Nuovo
             status: document.getElementById('selectStato').value,
             year: document.getElementById('inputAnno').value,
             season: document.getElementById('selectStagione').value,
@@ -89,14 +91,12 @@ async function eseguiRicerca(nuova = true) {
     totalResults.innerText = "Searching...";
 
     try {
-        // Controllo se BASE_URL è stato configurato
-        if (BASE_URL.includes("TUO-SERVER-QUI")) {
-            throw new Error("Devi inserire l'URL di Render nel file script.js!");
+        if (BASE_URL.includes("TUO-LINK-RENDER-QUI")) {
+            throw new Error("Devi inserire l'URL di Render alla riga 2 del file script.js!");
         }
 
-        const query = `mediaType=${filtriAttivi.mediaType}&q=${encodeURIComponent(filtriAttivi.q)}&genre=${filtriAttivi.genre}&exclude_genre=${filtriAttivi.exclude}&status=${filtriAttivi.status}&year=${filtriAttivi.year}&season=${filtriAttivi.season}&manga_type=${filtriAttivi.manga_type}&episodes=${filtriAttivi.episodes}&page=${paginaAttuale}`;
+        const query = `mediaType=${filtriAttivi.mediaType}&q=${encodeURIComponent(filtriAttivi.q)}&genre=${filtriAttivi.genre}&exclude_genre=${filtriAttivi.exclude}&genres_mode=${filtriAttivi.genres_mode}&min_score=${filtriAttivi.min_score}&status=${filtriAttivi.status}&year=${filtriAttivi.year}&season=${filtriAttivi.season}&manga_type=${filtriAttivi.manga_type}&episodes=${filtriAttivi.episodes}&page=${paginaAttuale}`;
         
-        // Uso la variabile centrale BASE_URL
         const response = await fetch(`${BASE_URL}/api/search?${query}`);
         
         const contentType = response.headers.get("content-type");
@@ -148,20 +148,21 @@ async function eseguiRicerca(nuova = true) {
 }
 
 async function animeRandom() {
-    listaContainer.innerHTML = "<div class='loader'>Summoning a random title... ✨</div>";
+    listaContainer.innerHTML = "<div class='loader'>Summoning a true random title... ✨</div>";
     paginationBox.style.display = 'none';
     totalResults.innerText = "1 found";
     
     try {
-        if (BASE_URL.includes("TUO-SERVER-QUI")) {
-            throw new Error("Devi inserire l'URL di Render nel file script.js!");
+        if (BASE_URL.includes("TUO-LINK-RENDER-QUI")) {
+            throw new Error("Devi inserire l'URL di Render alla riga 2 del file script.js!");
         }
 
         const tags = getTags(); 
         const mediaType = document.querySelector('input[name="mediaType"]:checked').value;
+        const genresMode = document.getElementById('selectGenreMode').value;
+        const minScore = document.getElementById('inputScore').value;
 
-        // Uso la variabile centrale BASE_URL
-        const response = await fetch(`${BASE_URL}/api/random?mediaType=${mediaType}&genre=${tags.included}&exclude_genre=${tags.excluded}`);
+        const response = await fetch(`${BASE_URL}/api/random?mediaType=${mediaType}&genre=${tags.included}&exclude_genre=${tags.excluded}&genres_mode=${genresMode}&min_score=${minScore}`);
         
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
