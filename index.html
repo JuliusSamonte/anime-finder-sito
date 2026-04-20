@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otaku Database 🌌</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Otaku Database</h1>
+            <p>Discover your next favorite anime & manga</p>
+        </header>
+        
+        <div class="search-box">
+            <div class="toggle-container full-width">
+                <input type="radio" id="toggleAnime" name="mediaType" value="anime" checked>
+                <label for="toggleAnime" class="toggle-btn">📺 Anime</label>
+                
+                <input type="radio" id="toggleManga" name="mediaType" value="manga">
+                <label for="toggleManga" class="toggle-btn">📚 Manga</label>
+            </div>
+
+            <div class="input-group">
+                <label>Name</label>
+                <input type="text" id="inputNome" placeholder="E.g. Naruto">
+            </div>
+            
+            <div class="input-group">
+                <label>Status</label>
+                <select id="selectStato">
+                    <option value="">All</option>
+                    <option value="airing">Ongoing (Airing/Pub)</option>
+                    <option value="complete">Finished</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Year</label>
+                <input type="number" id="inputAnno" placeholder="2024">
+            </div>
+
+            <div class="input-group" id="boxStagione">
+                <label>Season</label>
+                <select id="selectStagione">
+                    <option value="">All Year</option>
+                    <option value="winter">❄️ Winter</option>
+                    <option value="spring">🌸 Spring</option>
+                    <option value="summer">☀️ Summer</option>
+                    <option value="fall">🍂 Fall</option>
+                </select>
+            </div>
+
+            <div class="input-group" id="boxMangaType" style="display: none;">
+                <label>Format</label>
+                <select id="selectMangaType">
+                    <option value="">All Formats</option>
+                    <option value="manga">Manga (JP)</option>
+                    <option value="manhwa">Manhwa (KR)</option>
+                    <option value="manhua">Manhua (CN)</option>
+                    <option value="lightnovel">Light Novel</option>
+                    <option value="oneshot">One-shot</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label id="lblMaxEp">Max Ep.</label>
+                <input type="number" id="inputEpisodi" placeholder="24">
+            </div>
+
+            <div class="input-group full-width">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label>Tags (Click 1x: Include, 2x: Exclude, 3x: Reset)</label>
+                    <button id="btnResetTags" class="btn-small">🔄 Reset Tags</button>
+                </div>
+                
+                <h4 style="margin: 10px 0 5px 0; color: var(--text-muted); font-size: 0.85rem;">GENRES</h4>
+                <div class="genre-grid">
+                    <span class="genre-badge" data-id="1" data-state="0">Action</span>
+                    <span class="genre-badge" data-id="2" data-state="0">Adventure</span>
+                    <span class="genre-badge" data-id="5" data-state="0">Avant Garde</span>
+                    <span class="genre-badge" data-id="4" data-state="0">Comedy</span>
+                    <span class="genre-badge" data-id="8" data-state="0">Drama</span>
+                    <span class="genre-badge" data-id="10" data-state="0">Fantasy</span>
+                    <span class="genre-badge" data-id="47" data-state="0">Gourmet</span>
+                    <span class="genre-badge" data-id="14" data-state="0">Horror</span>
+                    <span class="genre-badge" data-id="7" data-state="0">Mystery</span>
+                    <span class="genre-badge" data-id="22" data-state="0">Romance</span>
+                    <span class="genre-badge" data-id="24" data-state="0">Sci-Fi</span>
+                    <span class="genre-badge" data-id="36" data-state="0">Slice of Life</span>
+                    <span class="genre-badge" data-id="30" data-state="0">Sports</span>
+                    <span class="genre-badge" data-id="37" data-state="0">Supernatural</span>
+                    <span class="genre-badge" data-id="41" data-state="0">Suspense</span>
+                </div>
+
+                <h4 style="margin: 15px 0 5px 0; color: var(--text-muted); font-size: 0.85rem;">THEMES</h4>
+                <div class="genre-grid">
+                    <span class="genre-badge" data-id="50" data-state="0">Adult Cast</span>
+                    <span class="genre-badge" data-id="51" data-state="0">Anthropomorphic</span>
+                    <span class="genre-badge" data-id="52" data-state="0">CGDCT</span>
+                    <span class="genre-badge" data-id="53" data-state="0">Childcare</span>
+                    <span class="genre-badge" data-id="81" data-state="0">Crossdressing</span>
+                    <span class="genre-badge" data-id="55" data-state="0">Delinquents</span>
+                    <span class="genre-badge" data-id="39" data-state="0">Detective</span>
+                    <span class="genre-badge" data-id="58" data-state="0">Gag Humor</span>
+                    <span class="genre-badge" data-id="59" data-state="0">Gore</span>
+                    <span class="genre-badge" data-id="35" data-state="0">Harem</span>
+                    <span class="genre-badge" data-id="60" data-state="0">High Stakes Game</span>
+                    <span class="genre-badge" data-id="13" data-state="0">Historical</span>
+                    <span class="genre-badge" data-id="62" data-state="0">Isekai</span>
+                    <span class="genre-badge" data-id="63" data-state="0">Iyashikei</span>
+                    <span class="genre-badge" data-id="64" data-state="0">Love Polygon</span>
+                    <span class="genre-badge" data-id="66" data-state="0">Mahou Shoujo</span>
+                    <span class="genre-badge" data-id="17" data-state="0">Martial Arts</span>
+                    <span class="genre-badge" data-id="18" data-state="0">Mecha</span>
+                    <span class="genre-badge" data-id="67" data-state="0">Medical</span>
+                    <span class="genre-badge" data-id="38" data-state="0">Military</span>
+                    <span class="genre-badge" data-id="19" data-state="0">Music</span>
+                    <span class="genre-badge" data-id="6" data-state="0">Mythology</span>
+                    <span class="genre-badge" data-id="40" data-state="0">Psychological</span>
+                    <span class="genre-badge" data-id="72" data-state="0">Reincarnation</span>
+                    <span class="genre-badge" data-id="73" data-state="0">Reverse Harem</span>
+                    <span class="genre-badge" data-id="21" data-state="0">Samurai</span>
+                    <span class="genre-badge" data-id="23" data-state="0">School</span>
+                    <span class="genre-badge" data-id="75" data-state="0">Showbiz</span>
+                    <span class="genre-badge" data-id="29" data-state="0">Space</span>
+                    <span class="genre-badge" data-id="31" data-state="0">Super Power</span>
+                    <span class="genre-badge" data-id="76" data-state="0">Survival</span>
+                    <span class="genre-badge" data-id="78" data-state="0">Time Travel</span>
+                    <span class="genre-badge" data-id="82" data-state="0">Urban Fantasy</span>
+                    <span class="genre-badge" data-id="32" data-state="0">Vampire</span>
+                    <span class="genre-badge" data-id="79" data-state="0">Video Game</span>
+                    <span class="genre-badge" data-id="83" data-state="0">Villainess</span>
+                    <span class="genre-badge" data-id="48" data-state="0">Workplace</span>
+                </div>
+
+                <h4 style="margin: 15px 0 5px 0; color: var(--text-muted); font-size: 0.85rem;">DEMOGRAPHICS</h4>
+                <div class="genre-grid">
+                    <span class="genre-badge" data-id="43" data-state="0">Josei</span>
+                    <span class="genre-badge" data-id="15" data-state="0">Kids</span>
+                    <span class="genre-badge" data-id="42" data-state="0">Seinen</span>
+                    <span class="genre-badge" data-id="25" data-state="0">Shoujo</span>
+                    <span class="genre-badge" data-id="27" data-state="0">Shounen</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="btnCerca" class="btn-primary">Search</button>
+                <button id="btnRandom" class="btn-magic">Surprise Me ✨</button>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 15px;">
+            <h2 style="margin: 0; font-size: 1.5rem;">Results</h2>
+            <span id="totalResults" style="color: var(--primary); font-weight: bold;">0 found</span>
+        </div>
+
+        <div id="listaAnime" class="grid"></div>
+
+        <div id="paginationBox" class="pagination" style="display: none;">
+            <button id="btnPrev">« Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button id="btnNext">Next »</button>
+        </div>
+    </div>
+
+    <div id="animeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
