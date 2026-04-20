@@ -1,3 +1,6 @@
+// 👇 CAMBIA QUESTO CON IL TUO VERO LINK DI RENDER (Senza lo slash finale / ) 👇
+const BASE_URL = "https://TUO-SERVER-QUI.onrender.com";
+
 const btnCerca = document.getElementById('btnCerca');
 const btnRandom = document.getElementById('btnRandom');
 const btnResetTags = document.getElementById('btnResetTags');
@@ -86,10 +89,25 @@ async function eseguiRicerca(nuova = true) {
     totalResults.innerText = "Searching...";
 
     try {
+        // Controllo se BASE_URL è stato configurato
+        if (BASE_URL.includes("TUO-SERVER-QUI")) {
+            throw new Error("Devi inserire l'URL di Render nel file script.js!");
+        }
+
         const query = `mediaType=${filtriAttivi.mediaType}&q=${encodeURIComponent(filtriAttivi.q)}&genre=${filtriAttivi.genre}&exclude_genre=${filtriAttivi.exclude}&status=${filtriAttivi.status}&year=${filtriAttivi.year}&season=${filtriAttivi.season}&manga_type=${filtriAttivi.manga_type}&episodes=${filtriAttivi.episodes}&page=${paginaAttuale}`;
-        const response = await fetch(`https://anime-finder-backend.onrender.com/api/search?${query}`);
+        
+        // Uso la variabile centrale BASE_URL
+        const response = await fetch(`${BASE_URL}/api/search?${query}`);
+        
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+             throw new Error("Il server si sta svegliando (Render gratuito). Riprova tra 30 secondi!");
+        }
+
         const data = await response.json();
         
+        if (data.errore) throw new Error(data.errore);
+
         risultatiCorrenti = data.anime; 
         listaContainer.innerHTML = "";
 
@@ -124,7 +142,7 @@ async function eseguiRicerca(nuova = true) {
         }
 
     } catch (e) { 
-        listaContainer.innerHTML = "<p style='text-align:center; width:100%; color:var(--accent);'>Error loading data.</p>"; 
+        listaContainer.innerHTML = `<p style='text-align:center; width:100%; color:var(--accent);'>${e.message}</p>`; 
         totalResults.innerText = "Error";
     }
 }
@@ -135,17 +153,26 @@ async function animeRandom() {
     totalResults.innerText = "1 found";
     
     try {
+        if (BASE_URL.includes("TUO-SERVER-QUI")) {
+            throw new Error("Devi inserire l'URL di Render nel file script.js!");
+        }
+
         const tags = getTags(); 
         const mediaType = document.querySelector('input[name="mediaType"]:checked').value;
 
-        const response = await fetch(`/api/random?mediaType=${mediaType}&genre=${tags.included}&exclude_genre=${tags.excluded}`);
+        // Uso la variabile centrale BASE_URL
+        const response = await fetch(`${BASE_URL}/api/random?mediaType=${mediaType}&genre=${tags.included}&exclude_genre=${tags.excluded}`);
         
-        if (!response.ok) {
-            const errData = await response.json();
-            throw new Error(errData.errore || "Rate Limit reached");
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+             throw new Error("Il server si sta svegliando (Render gratuito). Riprova tra 30 secondi!");
         }
 
-        const item = await response.json();
+        const data = await response.json();
+        
+        if (data.errore) throw new Error(data.errore);
+
+        const item = data;
         risultatiCorrenti = [item]; 
         filtriAttivi.mediaType = mediaType; 
         mostraDettagli(0); 
@@ -171,7 +198,7 @@ function mostraDettagli(i) {
     modalBody.innerHTML = `
         <div class="modal-grid">
             <img src="${imageUrl}">
-            <div>
+            <div style="text-align: left;">
                 <h2>${a.title}</h2>
                 <p><span class="score-badge">⭐ ${a.score || 'N/A'}</span> | <strong>Status:</strong> ${a.status} | <strong>Format:</strong> ${formatName}</p>
                 <div style="margin: 20px 0; line-height: 1.6; color: var(--text-main); max-height: 250px; overflow-y: auto; padding-right: 10px;">
