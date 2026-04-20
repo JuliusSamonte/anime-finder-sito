@@ -1,5 +1,5 @@
 // 👇 INCOLLA IL TUO VERO LINK RENDER QUI (Senza lo slash finale / ) 👇
-const BASE_URL = "https://ecommerce-backend-h83g.onrender.com";
+const BASE_URL = "https://anime-finder-backend.onrender.com";
 
 const btnCerca = document.getElementById('btnCerca');
 const btnRandom = document.getElementById('btnRandom');
