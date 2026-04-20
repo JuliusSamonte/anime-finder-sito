@@ -1,5 +1,5 @@
 // 👇 CAMBIA QUESTO CON IL TUO VERO LINK DI RENDER (Senza lo slash finale / ) 👇
-const BASE_URL = "https://TUO-SERVER-QUI.onrender.com";
+const BASE_URL = "https://anime-finder-backend.onrender.com";
 
 const btnCerca = document.getElementById('btnCerca');
 const btnRandom = document.getElementById('btnRandom');
