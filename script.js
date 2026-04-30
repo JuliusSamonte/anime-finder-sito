@@ -1,4 +1,3 @@
-// 👇 INCOLLA IL TUO VERO LINK RENDER QUI (Senza lo slash finale / ) 👇
 const BASE_URL = "https://anime-finder-backend.onrender.com";
 
 const btnCerca = document.getElementById('btnCerca');
@@ -67,6 +66,17 @@ function getTags() {
     return { included: included.join(','), excluded: excluded.join(',') };
 }
 
+// FIX: Helper per costruire l'URL ignorando i campi vuoti
+function buildQueryParams(paramsObj) {
+    const params = new URLSearchParams();
+    for (const key in paramsObj) {
+        if (paramsObj[key] && String(paramsObj[key]).trim() !== '') {
+            params.append(key, paramsObj[key]);
+        }
+    }
+    return params.toString();
+}
+
 async function eseguiRicerca(nuova = true) {
     if (nuova) {
         paginaAttuale = 1;
@@ -75,7 +85,7 @@ async function eseguiRicerca(nuova = true) {
             mediaType: document.querySelector('input[name="mediaType"]:checked').value,
             q: document.getElementById('inputNome').value,
             genre: tags.included,
-            exclude: tags.excluded,
+            exclude_genre: tags.excluded,
             min_score: document.getElementById('inputScore').value,
             status: document.getElementById('selectStato').value,
             year: document.getElementById('inputAnno').value,
@@ -85,22 +95,17 @@ async function eseguiRicerca(nuova = true) {
         };
     }
 
-    listaContainer.innerHTML = "<div class='loader'>Searching the database... 🌌</div>";
+    listaContainer.innerHTML = "<div class='loader'>Searching the database... 🌌<br><small style='font-size:0.8rem; color:var(--text-muted);'>This might take a moment if the database is waking up.</small></div>";
     paginationBox.style.display = 'none';
     totalResults.innerText = "Searching...";
 
     try {
-        if (BASE_URL.includes("TUO-LINK-RENDER-QUI")) {
-            throw new Error("Devi inserire l'URL di Render alla riga 2 del file script.js!");
-        }
-
-        const query = `mediaType=${filtriAttivi.mediaType}&q=${encodeURIComponent(filtriAttivi.q)}&genre=${filtriAttivi.genre}&exclude_genre=${filtriAttivi.exclude}&min_score=${filtriAttivi.min_score}&status=${filtriAttivi.status}&year=${filtriAttivi.year}&season=${filtriAttivi.season}&manga_type=${filtriAttivi.manga_type}&episodes=${filtriAttivi.episodes}&page=${paginaAttuale}`;
-        
-        const response = await fetch(`${BASE_URL}/api/search?${query}`);
+        const queryParams = buildQueryParams({ ...filtriAttivi, page: paginaAttuale });
+        const response = await fetch(`${BASE_URL}/api/search?${queryParams}`);
         
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
-             throw new Error("Il server si sta svegliando (Render gratuito). Riprova tra 30 secondi!");
+             throw new Error("Il server (Render) si sta svegliando. Riprova tra circa 30 secondi! ⏳");
         }
 
         const data = await response.json();
@@ -116,7 +121,7 @@ async function eseguiRicerca(nuova = true) {
             return;
         }
 
-        const totale = data.pagination.items ? data.pagination.items.total : risultatiCorrenti.length;
+        const totale = data.pagination && data.pagination.items ? data.pagination.items.total : risultatiCorrenti.length;
         totalResults.innerText = `${totale} found`;
 
         risultatiCorrenti.forEach((item, i) => {
@@ -147,24 +152,27 @@ async function eseguiRicerca(nuova = true) {
 }
 
 async function animeRandom() {
-    listaContainer.innerHTML = "<div class='loader'>Summoning a true random title... ✨</div>";
+    listaContainer.innerHTML = "<div class='loader'>Summoning a true random title... ✨<br><small style='font-size:0.8rem; color:var(--text-muted);'>Rolling the gacha...</small></div>";
     paginationBox.style.display = 'none';
     totalResults.innerText = "1 found";
     
     try {
-        if (BASE_URL.includes("TUO-LINK-RENDER-QUI")) {
-            throw new Error("Devi inserire l'URL di Render alla riga 2 del file script.js!");
-        }
-
         const tags = getTags(); 
         const mediaType = document.querySelector('input[name="mediaType"]:checked').value;
         const minScore = document.getElementById('inputScore').value;
 
-        const response = await fetch(`${BASE_URL}/api/random?mediaType=${mediaType}&genre=${tags.included}&exclude_genre=${tags.excluded}&min_score=${minScore}`);
+        const queryParams = buildQueryParams({
+            mediaType: mediaType,
+            genre: tags.included,
+            exclude_genre: tags.excluded,
+            min_score: minScore
+        });
+
+        const response = await fetch(`${BASE_URL}/api/random?${queryParams}`);
         
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
-             throw new Error("Il server si sta svegliando (Render gratuito). Riprova tra 30 secondi!");
+             throw new Error("Il server (Render) si sta svegliando. Riprova tra circa 30 secondi! ⏳");
         }
 
         const data = await response.json();
